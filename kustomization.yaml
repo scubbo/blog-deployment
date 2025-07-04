@@ -7,5 +7,5 @@ resources:
 
 images:
   - name: image_name
-    newName: gitea.scubbo.org/scubbo/blog-content
+    newName: github.com/scubbo/blog-content
     newTag: 2895fc51ff453384521c084d45af3c4afe4bcaea
