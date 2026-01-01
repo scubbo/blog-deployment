@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cache-purge
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: purge
+        image: curlimages/curl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          curl -sS -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"purge_everything":true}' \
+            -w "\nHTTP Status: %{http_code}\n"
+        env:
+        - name: CF_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-cache-purge
+              key: token
+        - name: CF_ZONE_ID
+          value: "c86d55d225ed973d5da45239beac2f99"
+      restartPolicy: Never
+  backoffLimit: 2
