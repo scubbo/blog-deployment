@@ -9,4 +9,4 @@ resources:
 images:
 - name: image_name
   newName: ghcr.io/scubbo/blog-content
-  newTag: 8f58020b64bd9ab0e7a64881849a34830b61f85b
+  newTag: 3c100598de8e622e12f14b4d0303f3aa04822193
